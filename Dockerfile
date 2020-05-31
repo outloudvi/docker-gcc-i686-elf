@@ -1,4 +1,4 @@
-FROM ubuntu:18.04 AS builder
+FROM ubuntu:18.04
 
 RUN apt-get update && \
     apt-get install -y build-essential bison flex libgmp3-dev libmpc-dev libmpfr-dev texinfo wget file && \
@@ -31,8 +31,3 @@ RUN ../configure --target=$TARGET --prefix="$PREFIX" --disable-nls --enable-lang
     make -j2 all-target-libgcc && \
     make install-gcc && \
     make install-target-libgcc
-    
-# Stage 2
-FROM ubuntu:18.04
-ENV PATH "/opt/cross/bin:$PATH"
-COPY --from=builder /opt/cross /opt/cross
